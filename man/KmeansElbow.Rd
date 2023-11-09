@@ -56,9 +56,8 @@ to the k clusters (default FALSE)}
 Default "elbow"}
 
 \item{outdir:}{output directory where to store the elbow figure.
-Default "." (i.e., current directory)
+Default "." (i.e., current directory)}
 
-OUTPUT}
 }
 \value{
 kmeans object (see kmeans function from stats package)
