@@ -67,6 +67,14 @@
 #' @param plot.pca: whether to perform a pca plot colored according 
 #' to the k clusters (default FALSE)
 #'
+#' @param elbow.to.pdf: boolean, save elbow figure to pdf
+#'
+#' @param filename: name of the pdf where to save the elbow figure.
+#' Default "elbow"
+#'
+#' @param outdir: output directory where to store the elbow figure.
+#' Default "." (i.e., current directory) 
+#'
 #' OUTPUT
 #' @return kmeans object (see kmeans function from stats package)
 #'
@@ -96,7 +104,11 @@ KmeansElbow <- function(x
 				,nstarts = 10
 				,scaling.method = "na"
 				,decision.method = "knee"
-				,plot.pca = FALSE)
+				,plot.pca = FALSE
+                ,elbow.to.pdf = FALSE
+                ,filename = "elbow"
+                ,outdir = "."
+                )
 {
 #------------------		check arguments		----------------#
 	# the proposed nr of clusters cannot be greater than
@@ -182,7 +194,6 @@ KmeansElbow <- function(x
 		    ,xlab = "Nr of clusters"
 		    ,main = "Elbow method"
 		    )
-
 		
 		if(decision.method == "silhouette")
 		{
@@ -250,6 +261,35 @@ KmeansElbow <- function(x
 			)
  
 	if(plot.pca == TRUE){ plot.pca(x, km$cluster) }
+
+	# save elbow figure to pdf
+    if(elbow.to.pdf)
+    {
+        if(!grepl(pattern = ".pdf", x = filename))
+        { filename <- paste0(filename,".pdf")}
+        # open file
+        pdf(file = file.path(outdir,filename)
+    	   ,width  = 7
+           ,height = 5
+           )
+        #create plot
+        plot(sse, las = 1, type = "l", lwd = 3
+		    ,col = "deepskyblue"
+		    #, xlim = c(0, i + window)
+		    ,ylim = c(0, 1)
+		    ,ylab = "SSE within / total SSE"
+		    ,xlab = "Nr of clusters"
+		    ,main = "Elbow method"
+		    )
+		# optimum clusters in plot
+		lines(sse[opt] ~ opt, 
+	     type = "p", pch = 16, col = "red", cex = 1.3)
+		text(x = length(sse)/2, y = 0.7,
+	     labels = bquote("selected nr of clusters = " ~ .(opt))
+	    	)
+        # close plotting device
+        dev.off()
+	}
 
 	# return kmeans object
 	return (km)			

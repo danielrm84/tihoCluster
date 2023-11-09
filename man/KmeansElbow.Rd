@@ -48,7 +48,15 @@ method. Knee method is based on the implementation by Coffey et al
 (2019).}
 
 \item{plot.pca:}{whether to perform a pca plot colored according
-to the k clusters (default FALSE)
+to the k clusters (default FALSE)}
+
+\item{elbow.to.pdf:}{boolean, save elbow figure to pdf (default FALSE)}
+
+\item{filename:}{name of the pdf where to save the elbow figure.
+Default "elbow"}
+
+\item{outdir:}{output directory where to store the elbow figure.
+Default "." (i.e., current directory)
 
 OUTPUT}
 }
